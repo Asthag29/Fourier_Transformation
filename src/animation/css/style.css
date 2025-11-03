@@ -1,0 +1,87 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #1a1a1a;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+h1 {
+    color: #00ff88;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+canvas {
+    background: #000;
+    border: 2px solid #333;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 255, 136, 0.1);
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+button {
+    padding: 12px 24px;
+    font-size: 16px;
+    cursor: pointer;
+    background: #333;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+button:hover {
+    background: #444;
+    border-color: #00ff88;
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+.info {
+    color: #888;
+    text-align: center;
+    font-size: 14px;
+}
+
+.info p {
+    margin: 5px 0;
+}
+
+.info span {
+    color: #00ff88;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    canvas {
+        width: 100%;
+        height: auto;
+    }
+}
