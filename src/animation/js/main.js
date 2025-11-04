@@ -1,6 +1,5 @@
 import AnimationController from './animation_controller.js';
 
-// Function to get Fourier data from backend
 async function getFourierDataFromBackend(file, n_circles = 100) {
     const formData = new FormData();
     formData.append('file', file);
@@ -20,7 +19,6 @@ async function getFourierDataFromBackend(file, n_circles = 100) {
 
 let animationController = null;
 
-// Process button handler
 document.getElementById('processBtn').addEventListener('click', async () => {
     const fileInput = document.getElementById('fileInput');
     const selectedFile = fileInput.files[0];
@@ -31,11 +29,33 @@ document.getElementById('processBtn').addEventListener('click', async () => {
     }
     
     try {
-        const circlesData = await getFourierDataFromBackend(selectedFile, 100);
+        let circlesData = await getFourierDataFromBackend(selectedFile, 100);
+
+        console.log('=== RECEIVED DATA ===');
+        console.log('Total circles:', circlesData.length);
+        console.log('First 5 circles:', circlesData.slice(0, 5));
+        console.log('Amplitude range:', 
+            Math.min(...circlesData.map(c => c[0])), 
+            'to', 
+            Math.max(...circlesData.map(c => c[0]))
+        );
+
+        // ✅ SCALE UP the amplitudes if they're too small
+        const maxAmp = Math.max(...circlesData.map(c => c[0]));
+        if (maxAmp < 1) {
+            const scaleFactor = 1000 / maxAmp;
+            circlesData = circlesData.map(([amp, freq, phase]) => [
+                amp * scaleFactor,
+                freq,
+                phase
+            ]);
+            console.log('Scaled amplitudes by:', scaleFactor);
+        }
+
+        // ✅ Pass circlesData as second parameter
         animationController = new AnimationController('epicycleCanvas', circlesData);
         animationController.start();
         
-        // Update UI
         document.getElementById('circleCount').textContent = 
             animationController.epicycleSystem.circles.length;
     } catch (error) {
@@ -44,7 +64,6 @@ document.getElementById('processBtn').addEventListener('click', async () => {
     }
 });
 
-// Controls
 document.getElementById('pauseBtn').addEventListener('click', () => {
     if (animationController) {
         animationController.pause();

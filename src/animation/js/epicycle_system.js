@@ -4,9 +4,7 @@ export default class EpicycleSystem {
     constructor(data) {
         this.circles = [];
         this.path = [];
-        //need to look into what is this
-
-        // this.maxPathLength = 500;
+        this.maxPathLength = 500;
         this.createCircles(data);
     }
     
@@ -38,13 +36,10 @@ export default class EpicycleSystem {
     
     addPathPoint() {
         const lastCircle = this.circles[this.circles.length - 1];
-        this.path.push(
-            { x: lastCircle.endX, 
-            y: lastCircle.endY }
-        );
-        // if (this.path.length > this.maxPathLength) {
-        //     this.path.shift();
-        // }
+        this.path.push({ x: lastCircle.endX, y: lastCircle.endY });
+        if (this.path.length > this.maxPathLength) {
+            this.path.shift();
+        }
     }
     
     reset() {
@@ -57,7 +52,7 @@ export default class EpicycleSystem {
     clearPath() {
         this.path = [];
     }
-
+    
     render(context, xOffset, yOffset, scale) {
         // Draw all circles
         for (let circle of this.circles) {
@@ -68,14 +63,9 @@ export default class EpicycleSystem {
             context.strokeStyle = '#00ff88';
             context.lineWidth = 2;
             context.beginPath();
-            context.moveTo(
-                (this.path[0].x + xOffset) * scale, 
-                (this.path[0].y + yOffset) * scale);
-
+            context.moveTo(this.path[0].x + xOffset * scale, this.path[0].y + yOffset * scale);
             for (let i = 1; i < this.path.length; i++) {
-
-                context.lineTo((this.path[i].x + xOffset) * scale, 
-                (this.path[i].y + yOffset) * scale);
+                context.lineTo(this.path[i].x + xOffset * scale, this.path[i].y + yOffset * scale);
             }
             context.stroke();
         }
@@ -83,7 +73,7 @@ export default class EpicycleSystem {
         const lastCircle = this.circles[this.circles.length - 1];
         context.fillStyle = '#ff0088';
         context.beginPath();
-        context.arc(lastCircle.endX + xOffset, lastCircle.endY + yOffset, 4, 0, 2 * Math.PI);
+        context.arc(lastCircle.endX + xOffset * scale, lastCircle.endY + yOffset * scale, 4, 0, 2 * Math.PI);
         context.fill();
     }
 }

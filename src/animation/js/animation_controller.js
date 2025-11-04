@@ -1,11 +1,26 @@
 import EpicycleSystem from './epicycle_system.js';
 
+
 export default class AnimationController {
     constructor(canvasId, epicycleData) {
         this.canvas = document.getElementById(canvasId);
         this.context = this.canvas.getContext('2d');
         this.width = this.canvas.width;
         this.height = this.canvas.height;
+
+        // ADD: Auto-calculate scale based on data
+        const maxRadius = Math.max(...epicycleData.map(c => Math.abs(c[0])));
+         
+        console.log('Max circle radius:', maxRadius);
+    
+    // If circles are too small, scale them up
+    // If circles are too large, scale them down
+        this.scale = 0.1;
+        console.log('Using scale:', this.scale);
+    
+
+
+
         this.epicycleSystem = new EpicycleSystem(epicycleData);
         this.isRunning = true;
         
@@ -18,8 +33,8 @@ export default class AnimationController {
         // this.time = 0;
         // this.speed = 0.002;  // Speed of traversal through [0, 1]
         
-        this.xOffset = this.width * 0.25;
-        this.yOffset = this.height * 0.5;
+        this.xOffset = this.width /2;
+        this.yOffset = this.height /2 ;
     }
     
     update() {
@@ -53,7 +68,7 @@ export default class AnimationController {
     render() {
         this.context.fillStyle = '#000';
         this.context.fillRect(0, 0, this.width, this.height);
-        this.epicycleSystem.render(this.context, this.xOffset, this.yOffset, 100);
+        this.epicycleSystem.render(this.context, this.xOffset, this.yOffset);
         
         // Optional: Display current time for debugging
         this.context.fillStyle = '#fff';
