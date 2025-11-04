@@ -37,12 +37,12 @@ async def get_fourier_data(
             ]
             for i in range(len(result['frequencies']))
         ]
-        print(f"\n=== FOURIER DATA ===")
-        print(f"Total circles: {len(circles)}")
-        print(f"First 5 circles: {circles[:5]}")
-        print(f"Magnitude range: {min(c[0] for c in circles)} to {max(c[0] for c in circles)}")
-        print(f"Frequency range: {min(c[1] for c in circles)} to {max(c[1] for c in circles)}")
-        print(f"Phase range: {min(c[2] for c in circles)} to {max(c[2] for c in circles)}")
+        # print(f"\n=== FOURIER DATA ===")
+        # print(f"Total circles: {len(circles)}")
+        # print(f"First 5 circles: {circles[:5]}")
+        # print(f"Magnitude range: {min(c[0] for c in circles)} to {max(c[0] for c in circles)}")
+        # print(f"Frequency range: {min(c[1] for c in circles)} to {max(c[1] for c in circles)}")
+        # print(f"Phase range: {min(c[2] for c in circles)} to {max(c[2] for c in circles)}")
         return {"circles": circles, "success": True}
     except Exception as e:
         if os.path.exists(temp_path):
