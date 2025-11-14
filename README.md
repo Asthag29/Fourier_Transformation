@@ -47,4 +47,4 @@ uvicorn app:app --port 8000
 python3 -m http.server 8080
 ```
 
-Don't use safari ,you can't increase the number of circles more than 100(probably browser issue), use arc or chrome.
+Avoid using safari ,you can not increase the number of circles to more than 100(probably browser issue), use arc or chrome.
