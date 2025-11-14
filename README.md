@@ -15,21 +15,27 @@ I have been doing some research and found algorithms that can draw complete imag
 Commands to run locally on your computer 
 
 *Clone the repository to your machine.*
+
 `git clone https://github.com/your-username/fourier_series.git`
 
 *Navigate into the project directory.*
+
 `cd fourier_series`
 
 *Create a virtual environment.*
+
 `python3 -m venv .venv`
 
 *Install project dependencies.*
+
 `pip install .`
 
 *Start the FastAPI backend server.*
+
 `uvicorn app:app --reload --port 8000`
 
 *Start a HTTP server for the frontend.*
+
 `python3 -m http.server 8080`
 
 Don't use safari ,there you can't increase the number of circles more than 100(probably browser issue), use arc or chrome.
