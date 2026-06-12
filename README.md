@@ -1,52 +1,56 @@
-# Fourier Epicycles 
+---
+title: Fourier Faces
+emoji: 🌀
+colorFrom: green
+colorTo: blue
+sdk: docker
+pinned: false
+---
 
-![shinchan demo](Shinchan_fourier.gif)
+# Fourier Epicycles
 
-I have been pretty obsessed with Fourier transformations lately and have always enjoyed playing around with those cool websites where you can literally draw anything with epicycles. The only thing,I felt was missing was that I had to either draw things manually or use an SVG file format, neither of which was giving me good enough results.
+I have been pretty obsessed with Fourier transformations lately. There are a lot of Fourier epicycle websites out there, but most of them require you to either draw the shape manually or supply an SVG file — neither of which gives great results for real images. I wanted something that takes an actual image and figures out the epicycles itself. So I tried to make it by myself.
 
-So, I tried creating my own epicycles directly from an image (why not, I am cool, right?). Even though this is quite different from what I initially imagined ,which was to draw human sketches(soon realised why it was a bad idea 🙂) ,it actually works on cartoons to some extent. I did the mistake of trying it on myself, and it made me look like some bald old creature ,which I am definitely not! But this is still an ongoing project, and I haven’t given up yet.
+Upload any image and watch it get redrawn by epicycles.
 
-![astha demo](astha.gif)
+![demo](Shinchan_fourier.gif)
 
 ---
 
-The main problem with my algorithm is that I am using an edge detector to detect boundaries, which needs to be adjusted for different images since some are much noisier than others. So, I need to improve the preprocessing pipeline. The second problem is that I’m using splines for fitting the points(samped form the edge). In principle, this connects all the points, but it doesn’t align well with the actual curves of the images, resulting in very rough and edgy images. I need to replace this with something that better respects the curvature of the images(I tried using Bézier curves, it didn’t work either).
+## How it works
 
-I have been doing some research and found algorithms that can draw complete images with just one continuous line (which could solve my problem of point-fitting). I will try those algorithms next. Till then byee!!!
+The pipeline has four stages:
+
+**1. Edge detection** — the image is converted to grayscale and run through OpenCV's Canny edge detector, which gives a binary map of all the boundaries. Up to 2000 edge points are sampled from this.
+
+**2. Point ordering** — the sampled edge points are unordered (just a cloud of dots). A nearest-neighbour traversal walks through them to produce a single connected path, which is what the Fourier transform will be applied to.
+
+**3. Spline fitting** — a parametric spline (scipy `splprep/splev`) is fitted to the ordered points to smooth out the jagged nearest-neighbour path and resample it uniformly in time. If spline fitting fails, it falls back to Gaussian smoothing.
+
+**4. Fourier transform** — the 2D curve is encoded as a complex signal `z = x + iy` and FFT'd. The N largest frequency components (by amplitude) are kept — these become the epicycles. Each circle's radius is the magnitude, its rotation speed is the frequency, and its starting angle is the phase.
+
+The frontend receives the `(magnitude, frequency, phase)` list and animates the epicycles in real time on an HTML canvas.
 
 ---
 
-## Commands to run locally on your computer 
+## What needs improvement
 
-*Clone the repository to your machine.*
+Works reasonably well on cartoons and high-contrast images, falls apart on real photos. The core issue is that the pipeline was never designed to produce a clean single continuous stroke — it's a workaround built on top of an edge detector, and it shows.
+
+I've been doing some research on single-stroke tracing algorithms, which would replace the entire edge-sampling + ordering + spline approach with something that actually understands image contours. If you have something to propose, let me know.
+
+---
+
+## Run locally
 
 ```bash
 git clone https://github.com/Asthag29/Fourier_Transformation.git
 cd Fourier_Transformation
-```
 
-*Create a virtual environment.*
-
-```bash
 uv venv
-```
-
-*Install project dependencies.*
-
-```bash
 uv pip install .
-```
 
-*Start the FastAPI backend server.*
-
-```bash
 uvicorn app:app --port 8000
 ```
 
-*Start a HTTP server for the frontend.*
-
-```bash
-python3 -m http.server 8080
-```
-
-Avoid using safari ,you can not increase the number of circles to more than 100(probably browser issue), use arc or chrome.
+Then open `http://localhost:8000`. Avoid Safari — it caps the circle count at ~100 for some reason. Use Chrome or Arc.
