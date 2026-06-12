@@ -1,12 +1,3 @@
----
-title: Fourier Faces
-emoji: 🌀
-colorFrom: green
-colorTo: blue
-sdk: docker
-pinned: false
----
-
 # Fourier Epicycles
 
 I have been pretty obsessed with Fourier transformations lately. There are a lot of Fourier epicycle websites out there, but most of them require you to either draw the shape manually or supply an SVG file — neither of which gives great results for real images. I wanted something that takes an actual image and figures out the epicycles itself. So I tried to make it by myself.
